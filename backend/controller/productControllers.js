@@ -1,5 +1,6 @@
 import Product from "../models/product.js";
 import mongoose from "mongoose";
+
 export const uploadProduct = async (req, res) => {
   const productInfo = req.body;
   const { name, price, image } = productInfo;
