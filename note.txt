@@ -11,3 +11,6 @@
 11. 에러핸들링은 필수
 12. mongoose.Types.ObjectId -> MongoDb에서 PI 처럼 작동함
 13. router, controller design pattern
+
+--------------------------------------------------------------
+1.백엔드랑 프론트엔드 넣어줘야하는값들 맞춰주기
