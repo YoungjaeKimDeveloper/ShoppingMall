@@ -4,7 +4,7 @@ import { useProductStore } from "../../store/product";
 import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 const HomePage = () => {
-  const { products, getProducts } = useProductStore();
+  const { products, getProducts, updateProduct } = useProductStore();
   useEffect(() => {
     getProducts();
   }, []);
@@ -32,7 +32,7 @@ const HomePage = () => {
             w={"full"}
           >
             {products?.map((product) => (
-              <ProductCard key={product._id} product={product} />
+              <ProductCard key={product?._id} product={product} />
             ))}
           </SimpleGrid>
           {products.length === 0 && (

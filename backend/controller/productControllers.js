@@ -52,7 +52,7 @@ export const updateProduct = async (req, res) => {
     });
 
     console.info("UpdatedItem: ", updatedItem);
-    return res.status(200).json({ success: true, message: updatedItem });
+    return res.status(200).json({ success: true, updatedItem: updatedItem });
   } catch (error) {
     console.error("ERROR IN UPDATING ITEM", error.message);
     return res.status(400).json({ success: false, message: error.message });
@@ -63,13 +63,11 @@ export const getProducts = async (req, res) => {
   try {
     const products = await Product.find({});
     console.info(products);
-    return res
-      .status(200)
-      .json({
-        success: true,
-        products: products,
-        message: "Get the products Successfully",
-      });
+    return res.status(200).json({
+      success: true,
+      products: products,
+      message: "Get the products Successfully",
+    });
   } catch (error) {
     console.log("ERROR IN GETTING PRODUCTS: ", error.message);
     return res.status(400).json({ success: false, message: error.message });

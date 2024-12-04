@@ -5,6 +5,8 @@ import {
   Text,
   useColorModeValue,
   useToast,
+  VStack,
+  Input,
 } from "@chakra-ui/react";
 import { HStack } from "@chakra-ui/react";
 import { IconButton } from "@chakra-ui/react";
@@ -12,22 +14,39 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useProductStore } from "../../store/product";
 import React from "react";
 import { getProducts } from "../../../backend/controller/productControllers";
-
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
+import { useState } from "react";
 const ProductCard = ({ product }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { deleteProduct } = useProductStore();
   const textColor = useColorModeValue("gray.600", "gray.200");
-  const bg = useColorModeValue("white", "gray.800");
   const handleDeleteProduct = async (pid) => {
     const result = await deleteProduct(pid);
     if (result.status === 200) {
       getProducts();
     }
   };
-  const toast = useToast();
-  const onOpen = () => {
-    console.log("Open");
+  const [updatedProduct, setUpdatedProduct] = useState({
+    name: product.name,
+    price: product.price,
+    image: product.image,
+  });
+  const { updateProduct, getProducts } = useProductStore();
+  // Submit the updated Infomation
+  const submitUpdate = (pid, updateInfo) => {
+    updateProduct(pid, updateInfo);
+    onClose();
   };
-
   return (
     <Box
       shadow="lg"
@@ -59,6 +78,57 @@ const ProductCard = ({ product }) => {
           colorScheme="red"
         />
       </HStack>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalContent>
+          <ModalHeader>{updatedProduct.name}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <VStack>
+              <Input
+                placeholder="Product Name"
+                value={updatedProduct.name}
+                onChange={(e) =>
+                  setUpdatedProduct((prev) => ({
+                    ...prev,
+                    name: e.target.value,
+                  }))
+                }
+              />
+              <Input
+                placeContent="Price"
+                value={updatedProduct.price}
+                onChange={(e) =>
+                  setUpdatedProduct((prev) => ({
+                    ...prev,
+                    price: e.target.value,
+                  }))
+                }
+              />
+              <Input
+                placeContent="IMAGE URL..."
+                value={updatedProduct.image}
+                onChange={(e) =>
+                  setUpdatedProduct((prev) => ({
+                    ...prev,
+                    image: e.target.value,
+                  }))
+                }
+              />
+            </VStack>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => submitUpdate(product._id, updatedProduct)}
+            >
+              Update
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

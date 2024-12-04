@@ -60,4 +60,28 @@ export const useProductStore = create((set) => ({
       return { success: false, error: error.message };
     }
   },
+  updateProduct: async (pid, updateInfo) => {
+    try {
+      // 어떻게 업데이트된 정보를 보내지?
+      const res = await fetch(`/api/product/${pid}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // 클라이언트에서 서버쪽으로 데이터를 보낼때는 stringfy를 넣어서 보내고
+        body: JSON.stringify(updateInfo),
+      });
+      // 다시 data를 받아왔을때는 json으로
+      const data = await res.json();
+      set((state) => ({
+        products: state.products.map((product) =>
+          product._id === pid ? data.updatedItem : product
+        ),
+      }));
+      return { success: true, message: "ITEM UPDATED" };
+    } catch (error) {
+      console.error("ERROR IN UPDATING ITEM: ", error.message);
+      return { success: false, message: error.message };
+    }
+  },
 }));

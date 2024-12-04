@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
 import {
   Container,
   Heading,
@@ -9,9 +10,8 @@ import {
   Button,
   useToast,
 } from "@chakra-ui/react";
-import { useProductStore } from "../../store/product";
-
-//
+import { useProductStore } from "../../store/product.js";
+import { useNavigate } from "react-router-dom";
 const CreatePage = () => {
   const { createProduct } = useProductStore();
   const [newProduct, setNewProduct] = useState({
@@ -20,6 +20,7 @@ const CreatePage = () => {
     image: "",
   });
   const toast = useToast();
+  const navigate = useNavigate();
   const handleAddProduct = async () => {
     const { success, message } = await createProduct(newProduct);
     if (!success) {
@@ -39,6 +40,7 @@ const CreatePage = () => {
         isClosable: true,
       });
     }
+    navigate("/");
     setNewProduct({
       name: "",
       price: "",
