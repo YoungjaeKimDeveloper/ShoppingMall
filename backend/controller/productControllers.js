@@ -63,7 +63,13 @@ export const getProducts = async (req, res) => {
   try {
     const products = await Product.find({});
     console.info(products);
-    return res.status(200).json({ success: true, message: products });
+    return res
+      .status(200)
+      .json({
+        success: true,
+        products: products,
+        message: "Get the products Successfully",
+      });
   } catch (error) {
     console.log("ERROR IN GETTING PRODUCTS: ", error.message);
     return res.status(400).json({ success: false, message: error.message });

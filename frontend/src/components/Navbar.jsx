@@ -12,9 +12,11 @@ import { Link } from "react-router-dom";
 
 import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
+import { useProductStore } from "../../store/product.js";
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const { products } = useProductStore();
   return (
     <Container maxH={"1140px"}>
       <Flex
